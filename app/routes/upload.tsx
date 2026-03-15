@@ -56,7 +56,8 @@ const Upload = () => {
             ? feedback.message.content
             : feedback.message.content[0].text;
 
-        data.feedback = JSON.parse(feedbackText);
+        const jsonMatch = feedbackText.match(/\{[\s\S]*\}/);
+        data.feedback = jsonMatch ? JSON.parse(jsonMatch[0]) : feedbackText;
         await kv.set(`resume:${uuid}`, JSON.stringify(data));
         setStatusText('Analysis complete, redirecting...');
         console.log(data);
